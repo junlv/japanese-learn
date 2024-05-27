@@ -325,7 +325,7 @@
                 },
                 readTxt() {
                     const self = this
-                    fetch('./data.txt?a=2')
+                    fetch('./data.txt?a=' + new Date().getTime() )
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
