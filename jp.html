@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta http-equiv="expires" content="Wed, 20 Jun 2018 22:33:00 GMT">
+    <meta http-equiv="X-UA-COMPATIBLE">
+    <title></title>
+    <link href="https://fonts.cdnfonts.com/css/roboto" rel="stylesheet">
+    <script src="./vue.global.js"></script>
+    <style>
+        @font-face {
+
+            font-family: 'SourceHanSerifJP';
+            font-weight: 600;
+            src: url('/SourceHanSerifJP-Bold.otf') format('opentype');
+            font-display: swap;
+
+        }
+
+        @font-face {
+
+            font-family: 'QiushuiShotai';
+            font-weight: 600;
+            src: url('/QiushuiShotai.otf') format('opentype');
+            font-display: swap;
+
+        }
+
+        html,
+        body {
+            height: 100%;
+            color: #88ada6;
+            background: black;
+            font-size: 22px;
+            padding: 8px 4px;
+            font-family: "QiushuiShotai";
+        }
+
+        .word-container {
+            position: relative;
+            height: calc(100% - 30vh);
+            overflow-y: scroll;
+            padding: 12px 8px;
+            border-radius: 8px;
+            background: #161823;
+            color: #fffbf0;
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 30px;
+        }
+
+        .question {
+            font-weight: 600;
+            font-family: "SourceHanSerifJP";
+            font-size: 32px;
+            color: #88ada6;
+        }
+
+        .answer {
+
+            position: relative;
+            padding: 0 8px;
+            font-size: 30px;
+        }
+
+ 
+        .comment {
+            position: relative;
+            margin-top: 8px;
+            padding-left: 8px;
+        }
+
+        .comment-item {
+            color: #88ada6;
+            font-size: 22px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .rei {
+            margin-right: 10px;
+        }
+
+        .toolbar {
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .section {
+            width: 100%;
+            position: relative;
+            text-align: center;
+        }
+        .reii_audio_sen {
+            display: inline-block;
+        }
+
+        .level-select {
+            bottom: 10px;
+            display: flex;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            font-weight: bold;
+            font-size: 30px;
+            justify-content: space-between;
+            font-family: "SourceHanSerifJP";
+        }
+
+        .level-select-option {
+            margin-left: 5px;
+            margin-right: 5px;
+            flex-grow: 1;
+            flex-shrink: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            max-width: 32%;
+            border: thin solid #88ada6;
+            border-radius: 5px;
+            color: #88ada6;
+        }
+        #app {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <audio id="myAudio"></audio>
+        <div class="toolbar">
+            &nbsp;&nbsp;{{learned}} / {{databaseLength}} &nbsp;&nbsp;
+            下手{{hard}}&nbsp;&nbsp;読み{{readed}}&nbsp;&nbsp;簡単{{easy}}
+        </div>
+        <div class="word-container" @click.prevent.stop="showNextField" >
+            <div class="level-select" v-if="
+            ((showStep == 2) && (curWord.sentences.length == 0)) || 
+            (showStep == 3) " >
+                <div class="level-select-option " @click.prevent.stop="updateCurdWord(3)">辛い</div>
+                <div class="level-select-option " @click.prevent.stop="updateCurdWord(2)">了解</div>
+                <div class="level-select-option " @click.prevent.stop="updateCurdWord(1)">上手</div>
+            </div>
+            <div class="section" v-else >
+                <span class="question" v-show="showStep == 0" @click.prevent.stop="playAudio(curWord.q)" >{{curWord.q}}</span>
+                <span class="answer " v-show="showStep == 1" @click.prevent.stop="playAudio(curWord.a)" >{{curWord.a}}</span>
+                <div class="comment"
+                    v-show="
+                    (showStep == 2) && curWord.sentences && (curWord.sentences.length > 0) ">
+                    <div class="comment-item" v-for="(item, index) in curWord.sentences" @click.prevent.stop="playAudio(item)" >
+                        {{item}}
+                    </div>
+                </div>
+            </div>
+       
+        </div>
+ 
+    </div>
+    </div>
+    <script>
+        const LEVEL_NUM = {
+            unread: 0,
+            easy: 1,
+            read: 2,
+            hard: 3
+        }
+        const { createApp, ref } = Vue
+
+        const app = createApp({
+
+            data() {
+                return {
+                    learned: 0,
+                    databaseLength: 0,
+                    hard: 0,
+                    readed: 0,
+                    easy: 0,
+                    curWord: {},
+                    showStep: 0,
+                    database: [],
+                    curWordLevel: LEVEL_NUM.read,
+                    sourceData: []
+                }
+            },
+            mounted() {
+                this.refreshinfotoolbar()
+                this.inited()
+            },
+            methods: {
+                playAudio(text) {
+                    let myaudio = document.getElementById('myAudio')
+                    if (text) {
+                        const voice = text;
+
+                        let msg = new SpeechSynthesisUtterance(voice);
+                        msg.text = voice;     // 文字内容
+                        msg.lang = "ja-JP";  // 使用的语言:中文
+                        //  window.speechSynthesis.speak(msg);
+                        myaudio.pause()
+                        myaudio.src = "https://dict.youdao.com/dictvoice?audio=" + voice + "&le=jap&type=3"
+                        myaudio.play()
+                        return;
+                    }
+                    if (this.curWord.q) {
+                        myaudio.src = "audio/" + this.curWord.q;
+                        myaudio.play()
+                    }
+                },
+                initDB() {
+                    let localDatabase = localStorage.getItem('gg_database')
+                    const t = new Date().getTime();
+                    if (localDatabase) {
+                        localDatabase = JSON.parse(localDatabase)
+                        if (Array.isArray(localDatabase)) {
+                            this.database = localDatabase;
+                        }
+                        // 缓存和数据库互相同步，去掉废弃的增加没有的
+                        if (this.database.length != this.databaseLength) {
+                            let database_length = this.database.length;
+                            for (let i = 0; i < this.databaseLength; i++) {
+                                for (let j = 0; j < database_length; j++) {
+                                    if (this.database[j].q == this.sourceData[i].q) {
+                                        this.sourceData[i].count = this.database[j].count;
+                                        this.sourceData[i].level = this.database[j].level;
+                                        this.sourceData[i].t = this.database[j].t;
+                                        break;
+                                    }
+                                }
+                            }
+                            this.database = this.sourceData;
+                        }
+                    }
+                    localStorage.setItem('gg_database', JSON.stringify(this.database))
+
+                },
+                refreshinfotoolbar() {
+                    let learned = 0;
+                    let easy = 0;
+                    let hard = 0;
+                    let readed = 0;
+
+                    for (let i = 0; i < this.databaseLength; i++) {
+                        if (this.database[i] && this.database[i].level != LEVEL_NUM.unread) {
+                            learned = learned + 1;
+                            if (this.database[i].level == LEVEL_NUM.hard) {
+                                hard = hard + 1;
+                            } else if (this.database[i].level == LEVEL_NUM.easy) {
+                                easy = easy + 1;
+                            } else if (this.database[i].level == LEVEL_NUM.read) {
+                                readed = readed + 1;
+                            }
+                        }
+                    }
+                    this.learned = learned
+                    this.easy = easy
+                    this.hard = hard
+                    this.readed = readed
+                },
+                inited() {
+                    this.readTxt()
+                },
+                updateCurdWord(level) {
+                    this.curWordLevel = level;
+                    this.saveRecentHistory();
+                    this.readWord()
+
+                },
+                showNextField() {
+                    if( this.showStep == 3 ) {
+                        return
+                    }
+                    this.showStep = (this.showStep + 1) % 4;
+                },
+                saveRecentHistory() {
+                    this.curWord.t = new Date().getTime();
+                    this.curWord.level = this.curWordLevel;
+                    this.curWord.count = this.curWord.count + 1;
+                    for (let i = 0; i < this.databaseLength; i++) {
+                        if (this.database[i].q == this.curWord.q) {
+                            const t = new Date().getTime();
+                            const level = this.curWord.level;
+                            const count = this.curWord.count;
+                            this.curWord = this.sourceData[i];
+                            this.curWord.t = t;
+                            this.curWord.level = level;
+                            this.curWord.count = count;
+                            this.database[i] = this.curWord;
+                            break;
+                        }
+                    }
+                    localStorage.setItem('gg_database', JSON.stringify(this.database))
+                    this.refreshinfotoolbar()
+                },
+                readWord() {
+                    this.curWord = {}
+                    this.showStep = 0;
+                    // 随机策略 0～～9 
+                    // 0 9 就是随机
+                    // 1 2 容易
+                    // 3 6 很难
+
+                    const index = Math.floor(Math.random() * 10);
+                    const curTimeStamp = new Date().getTime()
+                    let filterArr = []
+                    if (index == 1 || index == 2) { // 简单
+                        filterArr = this.database.filter((item, index) => {
+                            return (item.level == LEVEL_NUM.easy) && ((curTimeStamp - 3600000) > item.t)
+                            // 至少2分钟
+                        })
+                    } else if (index > 2 && index <= 6) {
+                        filterArr = this.database.filter((item, index) => {
+                            return (item.level == LEVEL_NUM.hard) && ((curTimeStamp - 120000) > item.t)
+                        })
+                    }
+
+                    if (filterArr.length >= 30) {
+                        filterArr.sort((a, b) => {
+                            return a.t - b.t;
+                        });
+                        const sortIndex = Math.floor(Math.random() * 30);
+                        this.curWord = filterArr[sortIndex];
+                    }
+                    if (!this.curWord.q) {
+                        let selectIndex = Math.floor(Math.random() * this.databaseLength);
+                        this.curWord = this.database[selectIndex];
+                        this.curWordLevel = this.curWord.level;
+                    }
+
+                },
+                readTxt() {
+                    const self = this
+                    fetch('./data.txt?a=2')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.text();
+                        })
+                        .then(text => {
+                            let database = []
+                            const ct = new Date().getTime()
+                            text.split('\n').forEach((line) => {
+                                if(line && line.length > 5 ) {
+                                    const items = line.split('/');
+                                    if (items.length >= 2) {
+                                        database.push({
+                                            q: items[0],
+                                            a: items[1],
+                                            sentences: items.slice(2),
+                                            count: 0,
+                                            level: 0,
+                                            t: ct
+                                        })
+                                    }
+                                }
+                            });
+                            self.sourceData = database
+                            self.database = database
+                            self.databaseLength = database.length
+                            self.initDB()
+                            self.readWord()
+                            self.refreshinfotoolbar()
+                        })
+                        .catch(error => {
+                            console.error('There has been a problem with your fetch operation:', error);
+                        });
+                }
+            }
+
+        })
+        app.mount('#app')
+    </script>
+</body>
+
+</html>
