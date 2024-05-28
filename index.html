@@ -20,45 +20,56 @@
         }
         * {
             box-sizing: border-box;
+            padding: 0;
+            margin: 0;
         }
         html,
         body {
+            width: 100vw;
             height: 100%;
             color: #88ada6;
             background: black;
             font-size: 22px;
-            padding: 8px 4px;
             font-family: "QiushuiShotai";
-            box-sizing: border-box;
             overflow: hidden;
+        }
+
+        #app {
+            position: relative;
+            height: 100%;
+            overflow: hidden;
+            padding: 12px 8px;
+        }
+
+        .word-info {
+            font-size: 14px;
+            height: 30px;
         }
 
         .word-container {
             position: relative;
-            height: calc(100vh - 100px);
-            box-sizing: border-box;
+            margin-top: 16px;
+            height: calc(100% - 200px);
             overflow-y: scroll;
-            padding: 12px 8px;
+           
             border-radius: 8px;
             background: #161823;
             color: #fffbf0;
-            display:flex;
-            align-items: center;
-            justify-content: center;
-            padding-top: 30px;
         }
 
         .question {
             font-weight: 600;
             font-size: 32px;
             color: #88ada6;
+            text-align: center;
         }
 
         .answer {
 
             position: relative;
-            padding: 0 8px;
-            font-size: 30px;
+            font-size: 32px;
+            text-align: center;
+            color: beige;
         }
 
  
@@ -79,22 +90,28 @@
         .rei {
             margin-right: 10px;
         }
-
-        .toolbar {
-            font-size: 14px;
-            margin-bottom: 16px;
-            height: 30px;
-        }
-        .section {
-            margin-top: 100px;
-            width: 100%;
-            position: relative;
-            text-align: center;
-        }
         .reii_audio_sen {
             display: inline-block;
         }
 
+        .action-wrap {
+            position: absolute;
+            bottom: 40px;
+            left: 8px;
+            height: 80px;
+            width: calc(100% - 16px);
+        }
+        .action-next {
+            width: 100%;
+            background: rgba(136, 173, 166,0.4);
+            color: beige;
+            border-radius: 10px;
+            text-align: center;
+            height: 100%;
+            line-height: 80px;
+            font-size: 30px;
+
+        }
         .level-select {
             bottom: 10px;
             display: flex;
@@ -118,35 +135,38 @@
             max-width: 32%;
             border-radius: 5px;
             color: #88ada6;
-            background-color: rgba(113, 35, 118,0.1);
+            
+        }
+
+        .action-hard {
+            background-color: rgba(113, 35, 118,0.3);
+        }
+
+        .action-normal {
+            background-color: rgba(113, 35, 118,0.6);
+        }
+        .action-easy {
+            background-color: rgba(113, 35, 118,0.8);
         }
   
-        #app {
-            position: relative;
-            height: 100%;
-            overflow: hidden;
+        #myAudio {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+            visibility: hidden;
         }
     </style>
 </head>
 
-<body>
-    <div id="app">
-        <audio id="myAudio"></audio>
-        <div class="toolbar">
+<body><audio id="myAudio"></audio><div id="app">
+        <div class="word-info">
             &nbsp;&nbsp;{{learned}} / {{databaseLength}} &nbsp;&nbsp;
             下手{{hard}}&nbsp;&nbsp;読み{{readed}}&nbsp;&nbsp;簡単{{easy}}
         </div>
-        <div class="word-container" @click.prevent.stop="showNextField" >
-            <div class="level-select" v-if="
-            ((showStep == 2) && (curWord.sentences.length == 0)) || 
-            (showStep == 3) " >
-                <div class="level-select-option " @click.prevent.stop="updateCurdWord(3)">辛い</div>
-                <div class="level-select-option " @click.prevent.stop="updateCurdWord(2)">了解</div>
-                <div class="level-select-option " @click.prevent.stop="updateCurdWord(1)">上手</div>
-            </div>
-            <div class="section" v-else >
-                <span class="question" v-show="showStep == 0" @click.prevent.stop="playAudio(curWord.q)" >{{curWord.q}}</span>
-                <span class="answer " v-show="showStep == 1" @click.prevent.stop="playAudio(curWord.a)" >{{curWord.a}}</span>
+        <div class="word-container" >
+                <div class="question" v-show="showStep == 0" @click.prevent.stop="playAudio(curWord.q)" >{{curWord.q}}</div>
+                <div class="answer " v-show="showStep == 1" @click.prevent.stop="playAudio(curWord.a)" >{{curWord.a}}</div>
                 <div class="comment"
                     v-show="
                     (showStep == 2) && curWord.sentences && (curWord.sentences.length > 0) ">
@@ -154,10 +174,19 @@
                         {{item}}
                     </div>
                 </div>
-            </div>
-       
         </div>
- 
+        <div class="action-wrap">
+            <div class="action-next" v-show=" ((showStep == 1) && (curWord.sentences.length > 0)) || 
+            showStep == 0 " @click="showNextField" >
+                next
+            </div>
+            <div class="level-select" v-show=" ((showStep == 1) && (curWord.sentences.length == 0)) || (showStep == 2) "
+           >
+                <div class="level-select-option action-hard" @click="updateCurdWord(3)">辛い</div>
+                <div class="level-select-option action-normal" @click="updateCurdWord(2)">了解</div>
+                <div class="level-select-option action-easy" @click="updateCurdWord(1)">上手</div>
+            </div>
+        </div>
     </div>
     </div>
     <script>
@@ -269,10 +298,7 @@
 
                 },
                 showNextField() {
-                    if( this.showStep == 3 ) {
-                        return
-                    }
-                    this.showStep = (this.showStep + 1) % 4;
+                    this.showStep = (this.showStep + 1) % 3;
                 },
                 saveRecentHistory() {
                     this.curWord.t = new Date().getTime();
