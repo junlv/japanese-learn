@@ -104,7 +104,7 @@
             width: calc(100% - 16px);
         }
         .action-next {
-            width: 100%;
+            width: 40%;
             background: rgba(136, 173, 166,0.4);
             color: beige;
             border-radius: 10px;
@@ -134,18 +134,13 @@
             align-items: center;
             justify-content: center;
             border-radius: 5px;
-            max-width: 32%;
+            max-width: 40%;
             border-radius: 5px;
             color: #88ada6;
-            
         }
 
         .action-hard {
             background-color: rgba(113, 35, 118,0.3);
-        }
-
-        .action-normal {
-            background-color: rgba(113, 35, 118,0.6);
         }
         .action-easy {
             background-color: rgba(113, 35, 118,0.8);
@@ -178,14 +173,16 @@
                 </div>
         </div>
         <div class="action-wrap">
+            <div class="action-next"  @click="playVoice" >
+                    発音
+            </div>
             <div class="action-next" v-show=" ((showStep == 1) && (curWord.sentences.length > 0)) || 
             showStep == 0 " @click="showNextField" >
                 next
             </div>
             <div class="level-select" v-show=" ((showStep == 1) && (curWord.sentences.length == 0)) || (showStep == 2) "
            >
-                <div class="level-select-option action-hard" @click="updateCurdWord(3)">辛い</div>
-                <div class="level-select-option action-normal" @click="updateCurdWord(2)">了解</div>
+                <div class="level-select-option action-hard" @click="updateCurdWord(3)">大変</div>
                 <div class="level-select-option action-easy" @click="updateCurdWord(1)">上手</div>
             </div>
         </div>
@@ -361,7 +358,8 @@
                 },
                 readTxt() {
                     const self = this
-                    fetch('./data.txt?a=0' )
+                    const version = 1
+                    fetch('./data.txt?v=' + version )
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
