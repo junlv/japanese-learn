@@ -102,6 +102,8 @@
             left: 8px;
             height: 80px;
             width: calc(100% - 16px);
+            display: flex;
+            justify-content: space-around;
         }
         .action-next {
             width: 40%;
@@ -218,6 +220,13 @@
                 this.inited()
             },
             methods: {
+                playVoice() {
+                    if( this.showStep == 0) {
+                        this.playAudio(this.curWord.q)
+                    } else if(this.showStep == 1) {
+                        this.playAudio(this.curWord.a)
+                    }
+                },
                 playAudio(text) {
                     let myaudio = document.getElementById('myAudio')
                     if (text) {
@@ -353,8 +362,7 @@
                         this.curWord = this.database[selectIndex];
                         this.curWordLevel = this.curWord.level;
                     }
-                    this.playAudio(this.curWord.q)
-
+                    // this.playAudio(this.curWord.q)
                 },
                 readTxt() {
                     const self = this
