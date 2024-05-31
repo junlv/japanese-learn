@@ -230,7 +230,7 @@
                 playAudio(text) {
                     let myaudio = document.getElementById('myAudio')
                     if (text) {
-                        const voice = text;
+                        const voice = text.replace(/[\/／~〜]/gi, "、");
 
                         let msg = new SpeechSynthesisUtterance(voice);
                         msg.text = voice;     // 文字内容
