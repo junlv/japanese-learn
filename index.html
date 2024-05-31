@@ -175,22 +175,38 @@
                 </div>
         </div>
         <div class="action-wrap">
-            <div class="action-next"  @click="playVoice" >
+            <div class="action-next"  @click="playVoice" v-show=" showStep < 2 " >
                     発音
             </div>
             <div class="action-next" v-show=" ((showStep == 1) && (curWord.sentences.length > 0)) || 
             showStep == 0 " @click="showNextField" >
                 next
             </div>
-            <div class="level-select" v-show=" ((showStep == 1) && (curWord.sentences.length == 0)) || (showStep == 2) "
-           >
-                <div class="level-select-option action-hard" @click="updateCurdWord(3)">大変</div>
-                <div class="level-select-option action-easy" @click="updateCurdWord(1)">上手</div>
+            <div class="level-select" v-show=" ((showStep == 1) && (curWord.sentences.length == 0)) || (showStep == 2) ">
+            <div class="level-select-option action-hard" @click="updateCurdWord(3)">大変</div>
+            <div class="level-select-option action-easy" @click="updateCurdWord(1)">上手</div>
             </div>
         </div>
     </div>
     </div>
     <script>
+
+        // const isJapaneseSentence = (text) => {
+        //     if(!text || text.length == 0) {
+        //         return false;
+        //     }
+        //     const length = text.length;
+        //     const regex = /[\u3040-\u309f\u30a0-\u30ff]/g;
+        //     let chineseCharsLength = (text.match(regex) || []).length; 
+        //     console.log("length =",length)
+        //     console.log("chineseCharsLength =",chineseCharsLength)
+
+        //     return (chineseCharsLength > 1) && (length - chineseCharsLength) < 5
+        // }
+
+        // const testString = 'Hello, こんにちは世界日本語！';
+        // console.log(isJapaneseSentence(testString));
+
         const LEVEL_NUM = {
             unread: 0,
             easy: 1,
