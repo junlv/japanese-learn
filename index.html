@@ -380,7 +380,7 @@
                 },
                 readTxt() {
                     const self = this
-                    const version = 1
+                    const version = 2
                     fetch('./data.txt?v=' + version )
                         .then(response => {
                             if (!response.ok) {
