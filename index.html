@@ -11,7 +11,7 @@
     <link href="https://fonts.cdnfonts.com/css/roboto" rel="stylesheet">
     <script src="./vue.global.js"></script>
     <style>
-        @font-face {
+        /* @font-face {
             font-family: 'QiushuiShotai';
             font-weight: 600;
             src: url('/QiushuiShotai.otf') format('opentype');
@@ -23,7 +23,7 @@
             font-weight: 600;
             src: url('/Pro-M.otf') format('opentype');
             font-display: swap;
-        }
+        } */
 
         * {
             box-sizing: border-box;
@@ -187,7 +187,7 @@
     </div>
     </div>
     <script>
-
+        const DATA_VERSION = "1.0.0"
         // const isJapaneseSentence = (text) => {
         //     if(!text || text.length == 0) {
         //         return false;
@@ -224,8 +224,7 @@
                     curWord: {},
                     showStep: 0,
                     database: [],
-                    curWordLevel: LEVEL_NUM.read,
-                    sourceData: []
+                    curWordLevel: LEVEL_NUM.read
                 }
             },
             mounted() {
@@ -265,26 +264,27 @@
                     if (localDatabase) {
                         localDatabase = JSON.parse(localDatabase)
                         if (Array.isArray(localDatabase)) {
-                            this.database = localDatabase;
-                        }
-                        // 缓存和数据库互相同步，去掉废弃的增加没有的
-                        if (this.database.length != this.databaseLength) {
-                            let database_length = this.database.length;
-                            for (let i = 0; i < this.databaseLength; i++) {
-                                for (let j = 0; j < database_length; j++) {
-                                    if (this.database[j].q == this.sourceData[i].q) {
-                                        this.sourceData[i].count = this.database[j].count;
-                                        this.sourceData[i].level = this.database[j].level;
-                                        this.sourceData[i].t = this.database[j].t;
-                                        break;
+                            if(this.databaseLength) {
+                                // 缓存和数据库互相同步，去掉废弃的增加没有的
+                                const database_length = localDatabase.length;
+                                for (let i = 0; i < this.databaseLength; i++) {
+                                    for (let j = 0; j < database_length; j++) {
+                                        if (this.database[i].q == localDatabase[j].q) {
+                                            this.database[i].count = localDatabase[j].count;
+                                            this.database[i].level = localDatabase[j].level;
+                                            this.database[i].t = localDatabase[j].t;
+                                            break;
+                                        }
                                     }
                                 }
+                            } else {
+                                this.database = localDatabase;
+                                this.databaseLength = localDatabase.length;
                             }
-                            this.database = this.sourceData;
                         }
                     }
                     localStorage.setItem('gg_database', JSON.stringify(this.database))
-
+                    localDatabase.setItem('data_version',DATA_VERSION)
                 },
                 refreshinfotoolbar() {
                     let learned = 0;
@@ -310,7 +310,16 @@
                     this.readed = readed
                 },
                 inited() {
-                    this.readTxt()
+                    let dataVersion = localStorage.getItem('data_version')
+                    if(dataVersion == DATA_VERSION) {
+                        console.log('数据已加载过')
+                        this.initDB()
+                        this.readWord()
+                        this.refreshinfotoolbar()
+                    } else {
+                        this.readTxt()
+                        console.log('有新数据')
+                    }
                 },
                 updateCurdWord(level) {
                     this.curWordLevel = level;
@@ -394,8 +403,7 @@
                 },
                 readTxt() {
                     const self = this
-                    const version = 3
-                    fetch('./data.txt?v=' + version )
+                    fetch('./data.txt?v=' + DATA_VERSION )
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
@@ -420,7 +428,7 @@
                                     }
                                 }
                             });
-                            self.sourceData = database
+            
                             self.database = database
                             self.databaseLength = database.length
                             self.initDB()
