@@ -350,8 +350,8 @@
                     // 随机策略 0～～9 
                     // 0 9 就是随机
                     // 1 2 容易
-                    // 3 6 很难
-
+                    // 3 8 很难
+                    
                     const index = Math.floor(Math.random() * 10);
                     const curTimeStamp = new Date().getTime()
                     let filterArr = []
@@ -366,11 +366,24 @@
                         })
                     }
 
-                    if (filterArr.length >= 30) {
+                    if (filterArr.length >= 50) {
+                        // 三种随机方式
+                        // 0 随机50个最久背诵时间里取一个 1 时间最久那个 2 记得次数最少的那个
                         filterArr.sort((a, b) => {
                             return a.t - b.t;
                         });
-                        const sortIndex = Math.floor(Math.random() * 30);
+                        let mod = Math.floor( Math.random() * 3 )
+                        let = 0;
+                        if(mod == 0) {
+                           sortIndex = Math.floor(Math.random() * 50 );
+                        } else if(mod == 1) {
+                           sortIndex = 0
+                        } else if(mod == 2 ) {
+                            filterArr.sort((a, b) => {
+                                return a.count - b.count;
+                            });
+                            sortIndex = 0
+                        }
                         this.curWord = filterArr[sortIndex];
                     }
                     if (!this.curWord.q) {
