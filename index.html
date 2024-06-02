@@ -394,7 +394,7 @@
                 },
                 readTxt() {
                     const self = this
-                    const version = 2
+                    const version = 3
                     fetch('./data.txt?v=' + version )
                         .then(response => {
                             if (!response.ok) {
