@@ -12,6 +12,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Antique&display=swap" rel="stylesheet">
+    <script>
+      const  formattedText = (text) =>{
+            return text.replace(".", "<br>").replace("。", "<br>");
+     }
+    </script>
     <script src="./vue.global.js"></script>
     <style>
         .zen-antique-regular {
@@ -182,13 +187,12 @@
             😔{{hard}}&nbsp;&nbsp;😀{{easy}}
         </div>
         <div class="word-container"  >
-                <div class="question" v-show="showStep >= 0" @click.prevent.stop="playAudio(curWord.q)" >{{curWord.q}}</div>
-                <div class="answer " v-show="showStep >= 1" @click.prevent.stop="playAudio(curWord.a)" >{{curWord.a}}</div>
+                <div class="question" v-show="showStep >= 0" @click.prevent.stop="playAudio(curWord.q)" v-html="formattedText(curWord.q)" ></div>
+                <div class="answer " v-show="showStep >= 1" @click.prevent.stop="playAudio(curWord.a)" v-html="formattedText(curWord.a)"  ></div>
                 <div class="comment"
                     v-show="
                     (showStep >= 2) && curWord.sentences && (curWord.sentences.length > 0) ">
-                    <div class="comment-item" v-for="(item, index) in curWord.sentences" @click.prevent.stop="playAudio(item)" >
-                        {{item}}
+                    <div class="comment-item" v-for="(item, index) in curWord.sentences" @click.prevent.stop="playAudio(item)" v-html="formattedText(item)" >
                     </div>
                 </div>
         </div>
