@@ -80,24 +80,25 @@
         }
 
         .question {
-            font-weight: 600;
-            font-size: 32px;
+            font-size: 30px;
             color: #88ada6;
-            text-align: center;
+            text-align: left;
             font-family: "Zen Antique", serif;
             font-weight: 400;
             font-style: normal;
+            padding: 8px;
         }
 
         .answer {
 
             position: relative;
-            font-size: 32px;
-            text-align: center;
+            font-size: 30px;
+            text-align: left;
             color: beige;
             font-family: "QiushuiShotai";
             font-weight: 400;
             font-style: normal;
+            padding: 8px;
         }
 
  
@@ -187,7 +188,7 @@
             😔{{hard}}&nbsp;&nbsp;😀{{easy}}
         </div>
         <div class="word-container"  >
-                <div class="question" v-show="showStep >= 0" @click.prevent.stop="playAudio(curWord.q)" v-html="formattedText(curWord.q)" ></div>
+                <div class="question" v-show="showStep >= 0" @click.prevent.stop="playAudio(curWord.q)" v-html="formattedText(test)" ></div>
                 <div class="answer " v-show="showStep >= 1" @click.prevent.stop="playAudio(curWord.a)" v-html="formattedText(curWord.a)"  ></div>
                 <div class="comment"
                     v-show="
@@ -245,8 +246,16 @@
                     curWord: {},
                     showStep: 0,
                     database: [],
+                    test:"演奏会は疾っくに始まっている. 切符は疾っくに売り切れた。",
                     curWordLevel: LEVEL_NUM.read
                 }
+            },
+            setup() {
+                const  formattedText = (text) =>{
+                    if(!text) return ''
+                    return text.replace(".", "<br>").replace("。", "<br>");
+                }
+                return { formattedText };
             },
             mounted() {
                 this.refreshinfotoolbar()
