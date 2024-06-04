@@ -191,12 +191,12 @@
             😔{{hard}}&nbsp;&nbsp;😀{{easy}}
         </div>
         <div class="word-container"  @click="showNextField" >
-                <div class="question" v-if="showStep >= 0 && curWord.q"  >
+                <div class="question" v-if="(showStep >= 0 && curWord.q)"  >
                     <div class="question-item" v-for="(questionItem, i) in curWord.q.split('。')" @click.prevent.stop="playAudio(questionItem)" >
                         {{questionItem}}
                     </div>
                 </div>
-                <div class="answer " v-if="showStep >= 1 && curWord.a"   >
+                <div class="answer " v-if="(showStep >= 1 && curWord.a) "   >
                     <div class="answer-item" v-for="(answerItem, j) in curWord.a.split('。')" @click.prevent.stop="playAudio(answerItem)" >
                         {{answerItem}}
                     </div>
@@ -249,6 +249,7 @@
 
             data() {
                 return {
+                    recall:true,
                     learned: 0,
                     databaseLength: 0,
                     hard: 0,
@@ -395,7 +396,7 @@
                 },
                 readWord() {
                     this.curWord = {}
-                    this.showStep = 0;
+                    this.showStep = 2;
                     // 随机策略 0～～9 
                     // 1 2 容易
                     // 3 7 很难
