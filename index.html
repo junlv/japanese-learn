@@ -189,7 +189,7 @@
             😔{{hard}}&nbsp;&nbsp;😀{{easy}}
         </div>
         <div class="word-container"  >
-                <div class="question" v-show="showStep >= 0" @click.prevent.stop="playAudio(curWord.q)" v-html="formattedText(test)" ></div>
+                <div class="question" v-show="showStep >= 0" @click.prevent.stop="playAudio(curWord.q)" v-html="formattedText(curWord.q)" ></div>
                 <div class="answer " v-show="showStep >= 1" @click.prevent.stop="playAudio(curWord.a)" v-html="formattedText(curWord.a)"  ></div>
                 <div class="comment"
                     v-show="
