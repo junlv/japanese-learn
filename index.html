@@ -77,12 +77,13 @@
         }
 
         .question {
-            font-size: 24px;
+            font-size: 26px;
+            line-height: 28px;
             color: #88ada6;
             text-align: left;
             font-weight: 400;
             font-style: normal;
-            line-height: 26px;
+            
             padding: 8px;
         }
 
@@ -93,8 +94,8 @@
         .answer {
 
             position: relative;
-            font-size: 24px;
-            line-height: 26px;
+            font-size: 26px;
+            line-height: 28px;
             text-align: left;
             color: beige;
             
@@ -116,7 +117,8 @@
 
         .comment-item {
             color: #88ada6;
-            font-size: 22px;
+            font-size: 26px;
+            line-height: 28px;
             margin-top: 10px;
             margin-bottom: 10px;
             text-align: left;
@@ -169,10 +171,10 @@
         }
 
         .action-hard {
-            background-color: rgba(113, 35, 118,0.3);
+            background-color: rgb(149, 18, 18);
         }
         .action-easy {
-            background-color: rgba(113, 35, 118,0.8);
+            background-color: rgb(95, 198, 95);
         }
   
         #myAudio {
@@ -210,8 +212,8 @@
         </div>
         <div class="action-wrap">
             <div class="level-select" >
-                <div class="level-select-option " @click="updateCurdWord(3)">大変</div>
-                <div class="level-select-option " @click="updateCurdWord(1)">上手</div>
+                <div class="level-select-option action-hard" @click="updateCurdWord(3)">大変</div>
+                <div class="level-select-option action-easy" @click="updateCurdWord(1)">上手</div>
                 <!-- <div class="level-select-option " @click="playVoice"  >発音</div> -->
                 <!-- <div class="level-select-option " 
                 @click="showNextField">next</div> -->
