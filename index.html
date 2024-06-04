@@ -253,7 +253,7 @@
             setup() {
                 const  formattedText = (text) =>{
                     if(!text) return ''
-                    return text.replace(".", "<br>").replace("。", "<br>");
+                    return text.replace(".", "<br>").replace("。", "<br>").replace(" ", "");
                 }
                 return { formattedText };
             },
