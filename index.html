@@ -179,7 +179,7 @@
 <body><audio id="myAudio"></audio><div id="app">
         <div class="word-info">
             &nbsp;&nbsp;{{learned}} / {{databaseLength}} &nbsp;&nbsp;
-            😔{{hard}}&nbsp;&nbsp;😀{{easy}}
+            <span color="red">{{hard}}</span> &nbsp;&nbsp;<span color="green">{{easy}}</span>
         </div>
         <div class="word-container"  @click="showNextField" >
                 <div class="question" v-if="(showStep >= 0 && curWord.q)"  >
