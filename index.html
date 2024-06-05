@@ -168,8 +168,8 @@
 
 <body><audio id="myAudio"></audio><div id="app">
         <div class="word-info">
-            &nbsp;&nbsp;{{learned}} / {{databaseLength}} &nbsp;&nbsp;
-            ✖︎{{hard}}&nbsp;&nbsp;❤︎{{easy}}
+            &nbsp;{{learned}} / {{databaseLength}} &nbsp;
+            ✖︎&nbsp{{hard}};&nbsp;✔︎&nbsp{{easy}}
         </div>
         <div class="word-container"  @click="showNextField" >
                 <div class="question" v-if="(showStep >= 0 && curWord.q)"  >
