@@ -154,12 +154,8 @@
             border-radius: 5px;
             max-width: 40%;
             border-radius: 5px;
-            color: rgb(17, 117, 105);
             background: #161823;
         }
-
-
-  
         #myAudio {
             opacity: 0;
             width: 0;
@@ -173,7 +169,7 @@
 <body><audio id="myAudio"></audio><div id="app">
         <div class="word-info">
             &nbsp;&nbsp;{{learned}} / {{databaseLength}} &nbsp;&nbsp;
-            <span color="red">{{hard}}</span> &nbsp;&nbsp;<span color="green">{{easy}}</span>
+            ✖︎{{hard}}&nbsp;&nbsp;❤︎{{easy}}
         </div>
         <div class="word-container"  @click="showNextField" >
                 <div class="question" v-if="(showStep >= 0 && curWord.q)"  >
