@@ -189,8 +189,11 @@
                 <div class="comment"
                     v-show="
                     (showStep >= 2) && curWord.sentences && (curWord.sentences.length > 0) ">
-                    <div class="comment-item" v-for="(item, index) in curWord.sentences" @click.prevent.stop="playAudio(item)" v-html="formattedText(item)" >
+                    <div v-for="(item, index) in curWord.sentences"  >
+                        <span class="comment-item" @click.prevent.stop="playAudio(item)" v-html="formattedText(item)" >
+                        </span>
                     </div>
+                  
                 </div>
         </div>
         <div class="action-wrap">
