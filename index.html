@@ -393,12 +393,11 @@
                             return (item.level == LEVEL_NUM.easy) && ((curTimeStamp - 3600000) > item.t)
                             // 至少2分钟
                         })
-                    } else if (index > 2 && index <= 7) {
+                    } else if (index > 2 && index <= 6) {
                         filterArr = this.database.filter((item, index) => {
                             return (item.level == LEVEL_NUM.hard) && ((curTimeStamp - 120000) > item.t)
                         })
                     }
-
                     if (filterArr.length >= 50) {
                         // 三种随机方式
                         // 0 随机50个最久背诵时间里取一个 1 时间最久那个 2 记得次数最少的那个
