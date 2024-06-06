@@ -30,12 +30,28 @@
         body {
             width: 100vw;
             height: 100%;
-            color: #343643;
-          
-            background: black;
             font-size: 22px;
             overflow: hidden;
         }
+
+        .theme_1 {
+            color: #a7a1a1;
+            background: #7a7374;
+        }
+        .theme_1_r {
+            color: #7a7374;
+            background: #a7a1a1;
+        }
+        .theme_2 {
+            color: rgba(148, 148, 159, 0.541);
+            background: #525288;
+        }
+        .theme_2_r {
+            color: #525288;
+            background: rgba(148, 148, 159, 0.541);
+        }
+
+        
 
         #app {
             position: relative;
@@ -56,8 +72,7 @@
             height: calc(100% - 150px);
             overflow-y: scroll;
             border-radius: 8px;
-            border: thin solid #161823;
-            color: #343643;
+            border: thin solid #a7a1a1;
         }
 
         .question {
@@ -67,14 +82,12 @@
             font-weight: 400;
             font-style: normal;
             padding: 8px;
-            color: rgb(224, 152, 111);
         }
 
   
         .answer {
             font-size: 26px;
             line-height: 28px;
-            color: rgb(50, 69, 219);
             text-align: left;
             font-weight: 400;
             font-style: normal;
@@ -89,7 +102,6 @@
         }
 
         .comment-item {
-            color: rgb(211, 214, 238);
             font-size: 26px;
             line-height: 30px;
             text-align: left;
@@ -109,8 +121,6 @@
         }
         .action-next {
             width: 40%;
-            background: rgba(136, 173, 166,0.4);
-            color: beige;
             border-radius: 10px;
             text-align: center;
             height: 100%;
@@ -142,7 +152,7 @@
             width: 40px;
             height: 40px;
             border-radius: 5px;
-            background: #161823;
+          
         }
         #myAudio {
             opacity: 0;
@@ -154,7 +164,7 @@
     </style>
 </head>
 
-<body><audio id="myAudio"></audio><div id="app">
+<body class="theme_2"><audio id="myAudio"></audio><div id="app">
         <div class="word-info">
             &nbsp;{{learned}} / {{databaseLength}} &nbsp;
             ✖︎&nbsp{{hard}};&nbsp;✔︎&nbsp{{easy}}
@@ -183,9 +193,9 @@
         </div>
         <div class="action-wrap">
             <div class="level-select" >
-                <div class="level-select-option action-hard" @click="updateCurdWord(3)">✖︎</div>
-                <div class="level-select-option action-easy" @click="playVoice">❀</div>
-                <div class="level-select-option action-easy" @click="updateCurdWord(1)">✔︎</div>
+                <div class="level-select-option theme_2_r" @click="updateCurdWord(3)">✖︎</div>
+                <div class="level-select-option theme_2_r" @click="playVoice">❀</div>
+                <div class="level-select-option theme_2_r" @click="updateCurdWord(1)">✔︎</div>
                 <!-- <div class="level-select-option " @click="playVoice"  >発音</div> -->
                 <!-- <div class="level-select-option " 
                 @click="showNextField">next</div> -->
