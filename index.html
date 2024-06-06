@@ -30,6 +30,7 @@
             width: 100vw;
             height: 100%;
             color: #343643;
+          
             background: black;
             font-size: 22px;
             font-family: "QiushuiShotai";
@@ -73,19 +74,17 @@
         .question-item {
             /* color: burlywood; */
             line-height: 30px;
-            background-color: #343643;
-            color: black;
+            color: rgb(211, 214, 238);
         }
 
         .answer {
-
             position: relative;
             font-size: 26px;
             line-height: 28px;
             text-align: left;
             background:black;
+            color: aquamarine;
             /* color: beige; */
-            
             font-weight: 400;
             font-style: normal;
             padding: 8px;
@@ -105,8 +104,7 @@
         }
 
         .comment-item {
-            background-color: #343643;
-            color: black;
+            color: rgb(211, 214, 238);
             font-size: 26px;
             line-height: 30px;
             margin-top: 10px;
@@ -180,19 +178,19 @@
         </div>
         <div class="word-container"  @click="showNextField" >
                 <div class="question" v-if="(showStep >= 0 && curWord.q)"  >
-                    <div class="question-item" v-for="(questionItem, i) in curWord.q.split('。')" @click.prevent.stop="playAudio(questionItem)" >
+                    <div class="question-item" v-for="(questionItem, i) in displayQuestion " @click.prevent.stop="playAudio(questionItem)" >
                         {{questionItem}}
                     </div>
                 </div>
                 <div class="answer " v-if="(showStep >= 1 && curWord.a) "   >
-                    <div class="answer-item" v-for="(answerItem, j) in curWord.a.split('。')" @click.prevent.stop="playAudio(answerItem)" >
+                    <div class="answer-item" v-for="(answerItem, j) in displayAnswer" @click.prevent.stop="playAudio(answerItem)" >
                         {{answerItem}}
                     </div>
                 </div>
                 <div class="comment"
                     v-show="
                     (showStep >= 2) && curWord.sentences && (curWord.sentences.length > 0) ">
-                    <div v-for="(item, index) in curWord.sentences"  >
+                    <div v-for="(item, index) in displaySentences"  >
                         <span class="comment-item" @click.prevent.stop="playAudio(item)" v-html="formattedText(item)" >
                         </span>
                     </div>
@@ -203,6 +201,7 @@
             <div class="level-select" >
                 <div class="level-select-option action-hard" @click="updateCurdWord(3)">✖︎</div>
                 <div class="level-select-option action-easy" @click="updateCurdWord(1)">✔︎</div>
+                <div class="level-select-option action-easy" @click="playVoice">✿</div>
                 <!-- <div class="level-select-option " @click="playVoice"  >発音</div> -->
                 <!-- <div class="level-select-option " 
                 @click="showNextField">next</div> -->
@@ -211,7 +210,7 @@
     </div>
     </div>
     <script>
-        const DATA_VERSION = "128"
+        const DATA_VERSION = "130"
         // const isJapaneseSentence = (text) => {
         //     if(!text || text.length == 0) {
         //         return false;
@@ -264,13 +263,61 @@
                 this.refreshinfotoolbar()
                 this.inited()
             },
+            computed: {
+                 displaySentences() {
+                    if(!this.curWord || !this.curWord.sentences || !this.curWord.sentences.length ||
+                        (this.curWord.sentences.length == 0)
+                    ) {
+                        return []
+                    }
+                     return this.curWord.sentences;
+                 },
+                 displayQuestion() {
+                    if(!this.curWord|| !this.curWord.q || !this.curWord.q.length ||
+                        (this.curWord.q.length == 0)
+                    ) {
+                        return []
+                    }
+                    const questionItems = this.curWord.q.split('。') 
+                    return questionItems
+                 },
+                 displayAnswer() {
+                    if(!this.curWord|| !this.curWord.a || !this.curWord.a.length ||
+                        (this.curWord.a.length == 0)
+                    ) {
+                        return []
+                    }
+                    return this.curWord.a.split('。') 
+                 }
+            },
             methods: {
                 playVoice() {
-                    if( this.showStep == 0) {
-                        this.playAudio(this.curWord.q)
-                    } else if(this.showStep == 1) {
-                        this.playAudio(this.curWord.a)
+                    const voices = []
+
+                    if(this.displayQuestion.length) {
+                        const text =  this.displayQuestion[0].split(' ')[0];
+                        voices.push(text);
                     }
+                    for(let item of this.displayQuestion) {
+                        if(item.indexOf('△') >= 0 ) {
+                            voices.push(item);
+                        }
+                    }
+                    for(let item of this.displayAnswer) {
+                        if(item.indexOf('△') >= 0 ) {
+                            voices.push(item);
+                        }
+                    }
+                    for(let item of this.displaySentences) {
+                        if(item.indexOf('△') >= 0 ) {
+                            voices.push(item);
+                        }
+                    }
+                    if (voices.length) {
+                        this.playAudio(voices.join('。。。。。。。'))
+                        return
+                    }
+                   
                 },
                 playAudio(text) {
                     let myaudio = document.getElementById('myAudio')
