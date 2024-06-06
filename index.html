@@ -285,7 +285,7 @@
                     const japanese_text = '△'
 
                     if(this.displayQuestion.length) {
-                        const text =  this.displayQuestion[0].split('')[0];
+                        const text =  this.displayQuestion[0].split(separator)[0];
                         voices.push(text);
                     }
                     for(let item of this.displayQuestion) {
