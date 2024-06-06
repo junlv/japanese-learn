@@ -54,6 +54,7 @@
         .word-info {
             font-size: 14px;
             height: 30px;
+            font-family: 'Menlo-Regular',Courier,CourierNewPSMT;
         }
 
         .word-container {
@@ -283,7 +284,7 @@
                 playVoice() {
                     const voices = []
                     const separator = ' '
-                    const japanese_text = '☞'
+                    const japanese_text = '➤'
 
                     if(this.displayQuestion.length) {
                         const text =  this.displayQuestion[0].split(separator)[0];
