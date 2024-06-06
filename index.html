@@ -302,17 +302,17 @@
                     }
                     for(let item of this.displayQuestion) {
                         if(item.indexOf('△') >= 0 ) {
-                            voices.push(item);
+                            voices.push(item.split(' ')[0]);
                         }
                     }
                     for(let item of this.displayAnswer) {
                         if(item.indexOf('△') >= 0 ) {
-                            voices.push(item);
+                            voices.push(item.split(' ')[0]);
                         }
                     }
                     for(let item of this.displaySentences) {
                         if(item.indexOf('△') >= 0 ) {
-                            voices.push(item);
+                            voices.push(item.split(' ')[0]);
                         }
                     }
                     if (voices.length) {
