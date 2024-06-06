@@ -52,10 +52,10 @@
         .word-container {
             position: relative;
             margin-top: 16px;
+            padding-top: 50%;
             height: calc(100% - 150px);
             overflow-y: scroll;
             border-radius: 8px;
-            padding-bottom: 100px;
             border: thin solid #161823;
             color: #343643;
         }
@@ -159,7 +159,7 @@
             &nbsp;{{learned}} / {{databaseLength}} &nbsp;
             ✖︎&nbsp{{hard}};&nbsp;✔︎&nbsp{{easy}}
         </div>
-        <div class="word-container"  @click="showNextField" >
+        <div class="word-container" >
                 <div class="question" v-if="(showStep >= 0 && curWord.q)"  >
                     <div class="question-item" v-for="(questionItem, i) in displayQuestion " @click.prevent.stop="playAudio(questionItem)" >
                         {{questionItem}}
