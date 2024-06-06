@@ -208,7 +208,7 @@
     </div>
     </div>
     <script>
-        const DATA_VERSION = "131"
+        const DATA_VERSION = "132"
         // const isJapaneseSentence = (text) => {
         //     if(!text || text.length == 0) {
         //         return false;
@@ -291,24 +291,26 @@
             methods: {
                 playVoice() {
                     const voices = []
+                    const separator = ' '
+                    const japanese_text = '△'
 
                     if(this.displayQuestion.length) {
-                        const text =  this.displayQuestion[0].split(' ')[0];
+                        const text =  this.displayQuestion[0].split('')[0];
                         voices.push(text);
                     }
                     for(let item of this.displayQuestion) {
-                        if(item.indexOf('△') >= 0 ) {
-                            voices.push(item.split('　')[0]);
+                        if(item.indexOf(japanese_text) >= 0 ) {
+                            voices.push(item.split(separator)[0]);
                         }
                     }
                     for(let item of this.displayAnswer) {
-                        if(item.indexOf('△') >= 0 ) {
-                            voices.push(item.split('　')[0]);
+                        if(item.indexOf(japanese_text) >= 0 ) {
+                            voices.push(item.split(separator)[0]);
                         }
                     }
                     for(let item of this.displaySentences) {
-                        if(item.indexOf('△') >= 0 ) {
-                            voices.push(item.split('　')[0]);
+                        if(item.indexOf(japanese_text) >= 0 ) {
+                            voices.push(item.split(separator)[0]);
                         }
                     }
                     if (voices.length) {
