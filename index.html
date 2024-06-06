@@ -32,27 +32,21 @@
             height: 100%;
             font-size: 22px;
             overflow: hidden;
+            background: #142334;
+            color: #fff;
         }
 
-        .theme_1 {
-            color: #a7a1a1;
-            background: #7a7374;
+        .blue {
+           color: #0093D3;
         }
-        .theme_1_r {
-            color: #7a7374;
-            background: #a7a1a1;
-        }
-        .theme_2 {
-            color: rgba(148, 148, 159, 0.541);
-            background: #525288;
-        }
-        .theme_2_r {
-            color: #525288;
-            background: rgba(148, 148, 159, 0.541);
+        .red {
+           color: #CC006B;
         }
 
+        .yellow {
+            color: #FFF10C;
+        }
         
-
         #app {
             position: relative;
             height: 100%;
@@ -68,11 +62,11 @@
         .word-container {
             position: relative;
             margin-top: 16px;
-            padding-top: 50%;
+            padding-top: 30%;
             height: calc(100% - 150px);
             overflow-y: scroll;
             border-radius: 8px;
-            border: thin solid #a7a1a1;
+            border: thin solid #333;
         }
 
         .question {
@@ -82,6 +76,7 @@
             font-weight: 400;
             font-style: normal;
             padding: 8px;
+            color: #0093D3;
         }
 
   
@@ -92,6 +87,7 @@
             font-weight: 400;
             font-style: normal;
             padding: 8px;
+            color: #FFF10C;
         }
  
         .comment {
@@ -108,6 +104,7 @@
             display: inline-block;
             padding: 8px;
             border-radius: 8px;
+            color: #CC006B;
         }
 
         .action-wrap {
@@ -164,10 +161,11 @@
     </style>
 </head>
 
-<body class="theme_2"><audio id="myAudio"></audio><div id="app">
+<body ><audio id="myAudio"></audio><div id="app">
         <div class="word-info">
-            &nbsp;{{learned}} / {{databaseLength}} &nbsp;
-            ✖︎&nbsp{{hard}};&nbsp;✔︎&nbsp{{easy}}
+            <span class="yellow">&nbsp;{{learned}} / {{databaseLength}} &nbsp; </span>
+            <span class="red">✖︎&nbsp;{{hard}}</span>&nbsp;
+            <span class="blue">✔︎&nbsp{{easy}}</span>
         </div>
         <div class="word-container" >
                 <div class="question" v-if="(showStep >= 0 && curWord.q)"  >
@@ -193,9 +191,9 @@
         </div>
         <div class="action-wrap">
             <div class="level-select" >
-                <div class="level-select-option theme_2_r" @click="updateCurdWord(3)">✖︎</div>
-                <div class="level-select-option theme_2_r" @click="playVoice">❀</div>
-                <div class="level-select-option theme_2_r" @click="updateCurdWord(1)">✔︎</div>
+                <div class="level-select-option red" @click="updateCurdWord(3)">✖︎</div>
+                <div class="level-select-option yellow" @click="playVoice">❀</div>
+                <div class="level-select-option blue" @click="updateCurdWord(1)">✔︎</div>
                 <!-- <div class="level-select-option " @click="playVoice"  >発音</div> -->
                 <!-- <div class="level-select-option " 
                 @click="showNextField">next</div> -->
