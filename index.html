@@ -40,6 +40,9 @@
         .yellow {
             color: #FFF10C;
         }
+        .yellow-disabled {
+            color: rgba(255, 243, 12, 0.384);
+        }
         
         #app {
             position: relative;
@@ -61,7 +64,7 @@
             position: relative;
             margin-top: 16px;
             padding-top: 10%;
-            height: calc(100% - 150px);
+            height: calc(100% - 90px);
             overflow-y: scroll;
             border-radius: 8px;
             border: thin dashed rgba(0, 148, 211, 0.44);
@@ -193,10 +196,11 @@
         </div>
         <div class="action-wrap">
             <div class="level-select" >
+                <div class="level-select-option "  :class="{ 'yellow': autoPlayVoice , 'yellow-disabled':!autoPlayVoice  }"  @click="toggleAutoVoice"  >☗</div>
                 <div class="level-select-option red" @click="updateCurdWord(3)">✖︎</div>
                 <div class="level-select-option yellow" @click="playVoice">❀</div>
                 <div class="level-select-option blue" @click="updateCurdWord(1)">✔︎</div>
-                <!-- <div class="level-select-option " @click="playVoice"  >発音</div> -->
+               
                 <!-- <div class="level-select-option " 
                 @click="showNextField">next</div> -->
             </div>
@@ -204,7 +208,7 @@
     </div>
     </div>
     <script>
-        const DATA_VERSION = "141"
+        const DATA_VERSION = "142"
         // const isJapaneseSentence = (text) => {
         //     if(!text || text.length == 0) {
         //         return false;
@@ -233,6 +237,7 @@
 
             data() {
                 return {
+                    autoPlayVoice:false,
                     recall:true,
                     learned: 0,
                     databaseLength: 0,
@@ -285,6 +290,11 @@
                  }
             },
             methods: {
+                toggleAutoVoice() {
+                    this.autoPlayVoice = !this.autoPlayVoice;
+                    localStorage.setItem('auto_voice',this.autoPlayVoice ? 1: 0)
+
+                },
                 playVoice() {
                     const voices = []
                     const separator = ' '
@@ -399,16 +409,20 @@
                     this.readed = readed
                 },
                 inited() {
+                    
                     let dataVersion = localStorage.getItem('data_version')
+                    let autoVoice = localStorage.getItem('auto_voice')
                     if(dataVersion == DATA_VERSION) {
                         console.log('数据已加载过')
                         this.initDB()
                         this.readWord()
                         this.refreshinfotoolbar()
+
                     } else {
                         this.readTxt()
                         console.log('有新数据')
                     }
+                    this.autoPlayVoice =  !!autoVoice;
                 },
                 updateCurdWord(level) {
                     this.curWordLevel = level;
@@ -486,7 +500,7 @@
                         this.curWord = this.database[selectIndex];
                         this.curWordLevel = this.curWord.level;
                     }
-                    // this.playAudio(this.curWord.q)
+                    this.autoPlayVoice && this.playVoice();
                 },
                 readTxt() {
                     const self = this
