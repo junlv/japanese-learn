@@ -8,6 +8,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta http-equiv="X-UA-COMPATIBLE">
     <title></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200..900&display=swap" rel="stylesheet">
     <script src="./vue.global.js"></script>
     <style>
 
@@ -67,6 +70,8 @@
         }
 
         .question {
+            font-family: "Noto Serif JP", serif;
+            font-optical-sizing: auto;
             font-size: 26px;
             line-height: 28px;
             text-align: left;
@@ -74,6 +79,7 @@
             font-style: normal;
             padding: 8px;
             color: #0093D3;
+
         }
 
   
@@ -101,7 +107,6 @@
             display: inline-block;
             padding: 8px;
             border-radius: 8px;
-            color: #CC006B;
         }
 
         .action-wrap {
@@ -178,8 +183,8 @@
                 <div class="comment"
                     v-show="
                     (showStep >= 2) && curWord.sentences && (curWord.sentences.length > 0) ">
-                    <div v-for="(item, index) in displaySentences"  :class="{ 'red': !(index % 2) , 'yellow': (index % 2)  }" >
-                        <span class="comment-item" @click.prevent.stop="playAudio(item)"  >
+                    <div v-for="(item, index) in displaySentences"   >
+                        <span class="comment-item" :class="{ 'red': !(index % 2) , 'yellow': (index % 2)  }" @click.prevent.stop="playAudio(item)"  >
                             {{item}}
                         </span>
                     </div>
