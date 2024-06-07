@@ -9,18 +9,11 @@
     <title></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200..900&display=swap" rel="stylesheet" >
+
     <script src="./vue.global.js"></script>
     <style>
 
-        @font-face {
-            font-family: 'QiushuiShotai';
-            font-weight: 600;
-            font-display: auto; /* or block, swap, fallback, optional */
-            /* src: url('/QiushuiShotai.otf') format('opentype'); */
-            src: url('./QiushuiShotai.woff2') format('woff2');
-            font-display: swap;
-        }
+      
 
         * {
             box-sizing: border-box;
@@ -533,6 +526,18 @@
         })
         app.mount('#app')
     </script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200..900&display=swap" rel="stylesheet" lazyload>
+    <style>
+
+        @font-face {
+            font-family: 'QiushuiShotai';
+            font-weight: 600;
+            font-display: auto; /* or block, swap, fallback, optional */
+            /* src: url('/QiushuiShotai.otf') format('opentype'); */
+            src: url('./QiushuiShotai.woff2') format('woff2');
+            font-display: swap;
+        }
+    </style>
 </body>
 
 </html>
