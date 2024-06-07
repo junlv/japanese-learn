@@ -71,6 +71,10 @@
             background: #134857;
         }
 
+        .japanese-word {
+            font-family: "Noto Serif JP", serif !important;
+        }
+
         .question {
             font-family: "Noto Serif JP", serif;
             font-optical-sizing: auto;
@@ -81,7 +85,6 @@
             font-style: normal;
             padding: 8px;
             color: #0093D3;
-
         }
 
   
@@ -179,7 +182,7 @@
                     </div>
                 </div>
                 <div class="answer " v-if="(showStep >= 1 && curWord.a) "   >
-                    <div class="answer-item" v-for="(answerItem, j) in displayAnswer" @click.prevent.stop="playAudio(answerItem)" >
+                    <div class="answer-item" v-for="(answerItem, j) in displayAnswer" :class="{  'japanese-word':(answerItem && (answerItem.indexOf('➤') >= 0) ) }"   @click.prevent.stop="playAudio(answerItem)" >
                         {{answerItem}}
                     </div>
                 </div>
@@ -187,7 +190,7 @@
                     v-show="
                     (showStep >= 2) && curWord.sentences && (curWord.sentences.length > 0) ">
                     <div v-for="(item, index) in displaySentences"   >
-                        <span class="comment-item" :class="{ 'red': !(index % 2) , 'yellow': (index % 2)  }" @click.prevent.stop="playAudio(item)"  >
+                        <span class="comment-item" :class="{ 'red': !(index % 2) , 'yellow': (index % 2) , 'japanese-word':(item && (item.indexOf('➤') >= 0) ) }" @click.prevent.stop="playAudio(item)"  >
                             {{item}}
                         </span>
                     </div>
