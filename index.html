@@ -49,6 +49,9 @@
         }
 
         .word-info {
+            position: absolute;
+            left: 8px;
+            top: 8px;
             font-size: 14px;
             height: 30px;
             font-family: 'Menlo-Regular',Courier,CourierNewPSMT;
@@ -108,7 +111,7 @@
             position: absolute;
             bottom: 5px;
             left: 8px;
-            height: 80px;
+            height: 44px;
             width: calc(100% - 16px);
             display: flex;
             justify-content: space-around;
@@ -159,12 +162,13 @@
 </head>
 
 <body ><audio id="myAudio"></audio><div id="app">
-        <div class="word-info">
-            <span class="yellow">◆{{learned}} / ◇{{databaseLength}}</span>&nbsp;&nbsp;
-            <span class="red">✖︎{{hard}}</span>&nbsp;
-            <span class="blue">✔︎{{easy}}</span>
-        </div>
+      
         <div class="word-container" >
+                <div class="word-info">
+                    <span class="yellow">◆{{learned}} / ◇{{databaseLength}}</span>&nbsp;&nbsp;
+                    <span class="red">✖︎{{hard}}</span>&nbsp;
+                    <span class="blue">✔︎{{easy}}</span>
+                </div>
                 <div class="question" v-if="(showStep >= 0 && curWord.q)"  >
                     <div class="question-item" v-for="(questionItem, i) in displayQuestion " @click.prevent.stop="playAudio(questionItem)" >
                         {{questionItem}}
