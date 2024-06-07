@@ -39,7 +39,6 @@
         .red {
            color: #CC006B;
         }
-
         .yellow {
             color: #FFF10C;
         }
@@ -179,7 +178,7 @@
                 <div class="comment"
                     v-show="
                     (showStep >= 2) && curWord.sentences && (curWord.sentences.length > 0) ">
-                    <div v-for="(item, index) in displaySentences"  >
+                    <div v-for="(item, index) in displaySentences"  :class="{ 'red': !(index % 2) , 'yellow': (index % 2)  }" >
                         <span class="comment-item" @click.prevent.stop="playAudio(item)"  >
                             {{item}}
                         </span>
