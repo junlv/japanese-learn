@@ -285,24 +285,37 @@
                     const voices = []
                     const separator = ' '
                     const japanese_text = '➤'
+                    const trimExp = /^\s+|\s+$/g
 
                     if(this.displayQuestion.length) {
-                        const text =  this.displayQuestion[0].split(separator)[0];
+                        let  text = this.displayQuestion[0].replace(trimExp, '');
+                        text =  text.split(separator)[0];
                         voices.push(text);
                     }
                     for(let item of this.displayQuestion) {
-                        if(item.indexOf(japanese_text) >= 0 ) {
-                            voices.push(item.split(separator)[0]);
+                        const pos =  item.indexOf(japanese_text)
+                        if(pos >= 0 ) {
+                           let text = item.substring(pos).replace(trimExp, '');
+                           text = text.split(separator)[0]
+                           voices.push(text);
                         }
                     }
+
                     for(let item of this.displayAnswer) {
-                        if(item.indexOf(japanese_text) >= 0 ) {
-                            voices.push(item.split(separator)[0]);
+                        const pos =  item.indexOf(japanese_text)
+                        if(pos >= 0 ) {
+                           let text = item.substring(pos).replace(trimExp, '');
+                           text = text.split(separator)[0]
+                           voices.push(text);
                         }
                     }
+
                     for(let item of this.displaySentences) {
-                        if(item.indexOf(japanese_text) >= 0 ) {
-                            voices.push(item.split(separator)[0]);
+                        const pos =  item.indexOf(japanese_text)
+                        if(pos >= 0 ) {
+                           let text = item.substring(pos).replace(trimExp, '');
+                           text = text.split(separator)[0]
+                           voices.push(text);
                         }
                     }
                     if (voices.length) {
