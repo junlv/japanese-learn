@@ -40,7 +40,9 @@
         .yellow-disabled {
             color: rgba(255, 243, 12, 0.384);
         }
-        
+        .blue-disabled {
+            color: #0094d349;
+        }
         #app {
             position: relative;
             height: 100%;
@@ -197,13 +199,11 @@
         </div>
         <div class="action-wrap">
             <div class="level-select" >
-                <div class="level-select-option "  :class="{ 'yellow': autoPlayVoice , 'yellow-disabled':!autoPlayVoice  }"  @click="toggleAutoVoice"  >☗</div>
+                <div class="level-select-option "  :class="{ 'blue': autoRecall , 'blue-disabled':!autoRecall  }"  @click="toggleRecall"  >◉</div>
+                <div class="level-select-option "  :class="{ 'yellow': autoPlayVoice , 'yellow-disabled':!autoPlayVoice  }"  @click="toggleAutoVoice"  >☊</div>
                 <div class="level-select-option red" @click="updateCurdWord(3)">✖︎</div>
-                <div class="level-select-option yellow" @click="playVoice">❀</div>
+                <div class="level-select-option yellow" @click="playVoice">➤</div>
                 <div class="level-select-option blue" @click="updateCurdWord(1)">✔︎</div>
-               
-                <!-- <div class="level-select-option " 
-                @click="showNextField">next</div> -->
             </div>
         </div>
     </div>
@@ -223,6 +223,7 @@
             data() {
                 return {
                     autoPlayVoice:false,
+                    autoRecall:false,
                     recall:true,
                     learned: 0,
                     databaseLength: 0,
@@ -278,7 +279,24 @@
                 toggleAutoVoice() {
                     this.autoPlayVoice = !this.autoPlayVoice;
                     localStorage.setItem('auto_voice',this.autoPlayVoice ? 1: 0)
-
+                },
+                toggleRecall() {
+                    let self = this
+                    self.autoRecall = !self.autoRecall;
+                    this.autoPlayRecall()
+                },
+                autoPlayRecall() {
+                    let self = this
+                    if(self.autoRecall) {
+                        self.readWord();
+                        let myaudio = document.getElementById('myAudio')
+                        
+                        let duration = 1000 + (myaudio.src.length -55) * 60
+                        console.log('playduration',duration)
+                        setTimeout(() =>{
+                            self.autoPlayRecall();
+                        }, duration);
+                    }
                 },
                 playVoice() {
                     const voices = []
@@ -413,7 +431,6 @@
                     this.curWordLevel = level;
                     this.saveRecentHistory();
                     this.readWord()
-
                 },
                 showNextField() {
                     if((this.showStep >= 2) || (this.showStep == 1 && this.curWord.sentences.length <= 0) ) {
