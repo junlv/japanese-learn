@@ -284,18 +284,22 @@
                     let self = this
                     self.autoRecall = !self.autoRecall;
                     this.autoPlayRecall()
+                 
                 },
                 autoPlayRecall() {
                     let self = this
+                    let myaudio = document.getElementById('myAudio')
                     if(self.autoRecall) {
                         self.readWord();
-                        let myaudio = document.getElementById('myAudio')
                         
                         let duration = 1000 + (myaudio.src.length -55) * 60
                         console.log('playduration',duration)
-                        setTimeout(() =>{
+                        window.autoplaytimer = setTimeout(() =>{
                             self.autoPlayRecall();
                         }, duration);
+                    }else {
+                        clearTimeout(window.autoplaytimer)
+                        myaudio.pause();
                     }
                 },
                 playVoice() {
