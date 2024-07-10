@@ -209,7 +209,7 @@
     </div>
     </div>
     <script>
-        const DATA_VERSION = "171"
+        const DATA_VERSION = "177"
         const LEVEL_NUM = {
             unread: 0,
             easy: 1,
@@ -520,10 +520,24 @@
                         .then(text => {
                             let database = []
                             const ct = new Date().getTime()
+                            let items = []
                             text.split('\n').forEach((line) => {
-                                if(line && line.length > 5 ) {
-                                    const items = line.split('/');
-                                    if (items.length >= 2) {
+                                if(line && (line.trim().length >= 2) ) {
+                                    items.push(line);
+                                    // const items = line.split('/');
+                                    // if (items.length >= 2) {
+                                    //     database.push({
+                                    //         q: items[0],
+                                    //         a: items[1],
+                                    //         sentences: items.slice(2),
+                                    //         count: 0,
+                                    //         level: 0,
+                                    //         t: ct
+                                    //     })
+                                    // }
+                                }else {
+                                    console.log("xxxxx",items)
+                                    if(items.length >= 2) {
                                         database.push({
                                             q: items[0],
                                             a: items[1],
@@ -533,6 +547,8 @@
                                             t: ct
                                         })
                                     }
+                                    items = []
+                                    
                                 }
                             });
             
