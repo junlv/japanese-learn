@@ -209,7 +209,7 @@
     </div>
     </div>
     <script>
-        const DATA_VERSION = "204"
+        const DATA_VERSION = "205"
         const LEVEL_NUM = {
             unread: 0,
             easy: 1,
@@ -353,10 +353,10 @@
                         let msg = new SpeechSynthesisUtterance(voice);
                         msg.text = voice;     // 文字内容
                         msg.lang = "ja-JP";  // 使用的语言:中文
-                        //  window.speechSynthesis.speak(msg);
-                        myaudio.pause()
-                        myaudio.src = "https://dict.youdao.com/dictvoice?audio=" + voice + "&le=jap&type=3"
-                        myaudio.play()
+                         window.speechSynthesis.speak(msg);
+                        // myaudio.pause()
+                        // myaudio.src = "https://dict.youdao.com/dictvoice?audio=" + voice + "&le=jap&type=3"
+                        // myaudio.play()
                         return;
                     }
                     if (this.curWord.q) {
